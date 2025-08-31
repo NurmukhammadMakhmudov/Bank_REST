@@ -1,0 +1,3 @@
+databaseChangeLog:
+  - include:
+      file: db/migration/v1/tables-init.yaml
