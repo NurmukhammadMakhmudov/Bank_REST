@@ -9,12 +9,31 @@
 
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username:  ${SPRING_DATASOURCE_USERNAME}
-    password:  ${SPRING_DATASOURCE_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/bank
+    username:  postgres
+    password:  secret
     driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
 
   liquibase:
     enabled: true
     change-log: classpath:db/migration/changelog-master.yaml
 
+# application.yml
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+app:
+  jwt:
+    secret: mysuperlongsecretkeythatismorethan32bytes123!
+    expiration-ms: 360000
+  country:
+    bin: 400000

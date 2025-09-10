@@ -1,4 +1,4 @@
-package com.example.bankcards.entity;
+package com.example.bankcards.entity.enums;
 
 public enum Status {
     ACTIVE(1),
@@ -10,5 +10,9 @@ public enum Status {
 
     Status(int statusCode) {
         this.statusCode = statusCode;
+    }
+
+    public int getStatusCode() {
+        return this.statusCode;
     }
 }

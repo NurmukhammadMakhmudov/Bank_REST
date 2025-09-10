@@ -1,25 +1,52 @@
 package com.example.bankcards.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.example.bankcards.entity.enums.Status;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
-@Setter
-@Getter
-@ToString
+@Table(name = "account")
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Account {
 
     @Id
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private BigDecimal balance;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "currency_code")
+    private Currency currency;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Card card;
+
+    @PrePersist
+    public void prePersist() {
+        if (balance == null) balance = BigDecimal.ZERO;
+        if (createdAt == null) createdAt = LocalDateTime.now();
+        if (status == null) status = Status.ACTIVE;
+    }
+
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User user;
 }

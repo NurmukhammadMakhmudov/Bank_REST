@@ -1,4 +1,7 @@
 package com.example.bankcards.repository;
 
-public interface AccountRepository {
+import com.example.bankcards.entity.Account;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface AccountRepository extends JpaRepository<Account, Long> {
 }
